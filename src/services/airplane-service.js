@@ -20,6 +20,56 @@ async function createAirPlane(data) {
     }
 }
 
+async function getAirplanes(){
+    try {
+        const airplanes = await airplaneRepository.getAll();
+        return airplanes;
+    } catch (error) {
+        throw new AppError('Error while getting all airplanes', StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function getAirplane(data){
+    try {
+        const airplanes = await airplaneRepository.get(data);
+        return airplanes;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The airplane you requested is not present", error.statusCode);
+        }
+        throw new AppError('Error while getting airplane', StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function destroyAirplane(data){
+    try {
+        const response = await airplaneRepository.destroy(data);
+        return response;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The airplane you requested is not present", error.statusCode);
+        }
+        throw new AppError('Error while deleting airplane', StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+async function updateAirplane(id, data){
+    try {
+        const response = await airplaneRepository.update(id, data);
+        return response;
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The airplane you requested is not present", error.statusCode);
+        }
+        throw new AppError('Error while updating airplane', StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+
+
 module.exports = {
-    createAirPlane
+    createAirPlane,
+    getAirplanes,
+    getAirplane,
+    destroyAirplane,
+    updateAirplane
 }
