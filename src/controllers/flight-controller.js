@@ -31,9 +31,21 @@ async function getAllFlights(req, res) {
     try {
         const flights = await FlightService.getAllFlights(req.query);
         SuccessResponse.data = flights;
-        return res.status(StatusCodes.CREATED).json(SuccessResponse);
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        ErrorResponse.message = "Something went wrong while creating a flight";
+        ErrorResponse.message = "Something went wrong while fetching flights";
+        ErrorResponse.error = { explanation: error?.message };
+        return res.status(error.statusCode).json(ErrorResponse);
+    }
+}
+
+async function getFlight(req, res) {
+    try {
+        const flight = await FlightService.getFlight(req.params.id);
+        SuccessResponse.data = flight;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        ErrorResponse.message = "Something went wrong while fetching the flight";
         ErrorResponse.error = { explanation: error?.message };
         return res.status(error.statusCode).json(ErrorResponse);
     }
@@ -92,7 +104,8 @@ async function getAllFlights(req, res) {
 
 module.exports = {
     createFlight,
-    getAllFlights
+    getAllFlights,
+    getFlight
     // getFlights,
     // getFlight,
     // destroyFlight,

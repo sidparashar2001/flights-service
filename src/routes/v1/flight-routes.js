@@ -12,11 +12,10 @@ router.post("/",
 router.get("/",
     FlightController.getAllFlights);
 
-// router.get("/",
-//     FlightController.getFlights);
+// /api/v1/flights/:id GET
 
-// router.get("/:id",
-//     FlightController.getFlight);
+router.get("/:id",
+    FlightController.getFlight);
 
 // router.delete("/:id",
 //     FlightController.destroyFlight);
